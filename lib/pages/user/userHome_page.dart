@@ -6,6 +6,8 @@ import 'package:fp_quiz/utils/firebas_database_utils.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:fp_quiz/utils/user.dart';
 import 'package:fp_quiz/pages/user/quizDetail_page.dart';
+import 'package:fp_quiz/pages/user/qrScanner_page.dart';
+
 
 class UserHome extends StatefulWidget {
 
@@ -34,8 +36,6 @@ class _UserHomeState extends State<UserHome> {
 
   @override
   Widget build(BuildContext context) {
-
-    print(widget.user);
     if(_loading) {
       databaseUtils.getUser(widget.user.uid).once().then((DataSnapshot snapshot) {
         userData = User.getUserInfo(snapshot);
@@ -170,7 +170,10 @@ class _UserHomeState extends State<UserHome> {
                           icon: Icon(Icons.cake),
                           color: isWinner ? Colors.greenAccent : Colors.redAccent,
                           onPressed: () => {
-                            isWinner ? print("oui") : null
+                        isWinner ? Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => QrScannerPge()),
+                      ) : null
                           }
                       );
                     },

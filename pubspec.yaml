@@ -18,6 +18,13 @@ environment:
 
 dependencies:
 
+  qr_flutter:
+    git:
+      url: git://github.com/lukef/qr.flutter.git
+      ref: 2.0.0-dev.1
+
+  barcode_scan: ^0.0.4
+
   firebase_auth: 0.7.0
 
   firebase_database: 1.0.5
