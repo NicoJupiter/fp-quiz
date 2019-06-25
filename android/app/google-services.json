@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "625398149410",
+    "firebase_url": "https://fpquiz-35452.firebaseio.com",
+    "project_id": "fpquiz-35452",
+    "storage_bucket": "fpquiz-35452.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:625398149410:android:38c289c558584b2c",
+        "android_client_info": {
+          "package_name": "com.example.fp_quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "625398149410-8mnplisl2tml4321634hfql6l9ekbu1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGiAJ0iuaCALqp1bziKfvuquJg5MWBL60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "625398149410-8mnplisl2tml4321634hfql6l9ekbu1h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
