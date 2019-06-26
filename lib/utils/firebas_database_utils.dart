@@ -32,12 +32,6 @@ class FirebaseDatabaseUtils {
     return _databaseReference;
   }
 
-  DatabaseReference getWinner(index) {
-    _databaseReference = database.reference().child('quiz/quiz'+index+'/winner');
-
-    return _databaseReference;
-  }
-
   DatabaseReference getListQuestion(selectedQuiz) {
     _databaseReference = database.reference().child("quiz/"+selectedQuiz+"/questions");
 

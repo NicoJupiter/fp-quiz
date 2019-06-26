@@ -160,7 +160,7 @@ class _UserHomeState extends State<UserHome> {
                   stream: FirebaseDatabase.instance
                       .reference()
                       .child('quiz')
-                      .child('quiz'+realIndex.toString())
+                      .child(userQuiz.idQuiz)
                       .child('winner')
                       .onValue,
                     builder:
@@ -180,7 +180,7 @@ class _UserHomeState extends State<UserHome> {
                           onPressed: () => {
                         isWinner ? Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => QrScannerPge()),
+                        MaterialPageRoute(builder: (context) => QrScannerPge(userQuiz.idQuiz)),
                       ) : null
                           }
                       );

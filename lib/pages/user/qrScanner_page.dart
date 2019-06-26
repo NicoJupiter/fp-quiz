@@ -3,19 +3,24 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 class QrScannerPge extends StatelessWidget {
 
+  QrScannerPge(this.quizId);
+
+  final String quizId;
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("User page"),
+        backgroundColor: Color(0xFF4e3883),
+        title: Text("Obtenir son gain"),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
             child: new QrImage(
-              data: "1234567890",
+              data: quizId,
               size: 200.0,
             ),
           )
