@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fp_quiz/pages/quiz/quizRegister_page.dart';
+import 'package:fp_quiz/pages/quiz/scanQrCode_page.dart';
 import 'package:fp_quiz/pages/user/login_page.dart';
-import 'package:fp_quiz/pages/quiz/quiz_page.dart';
 
 
 
@@ -55,7 +54,7 @@ class LandingPage extends StatelessWidget {
                               style: TextStyle(color: Colors.white , fontWeight: FontWeight.bold),
                             ),
                             onPressed: () {
-                              Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new QuizRegisterPage()));
+                              Navigator.of(context).push(new MaterialPageRoute(builder: (BuildContext context) => new ScanQrCodePage()));
                             },
                             shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
                         ),

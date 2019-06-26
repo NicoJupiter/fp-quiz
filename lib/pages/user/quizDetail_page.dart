@@ -18,6 +18,7 @@ class QuizDetail extends StatefulWidget {
 
 class QuizDetailState extends State<QuizDetail> {
 
+
    FirebaseDatabaseUtils databaseUtils = new FirebaseDatabaseUtils();
 
   final bool _anchorToBottom = false;
@@ -28,8 +29,8 @@ class QuizDetailState extends State<QuizDetail> {
 
 
     if(_isLoading) {
-
-      databaseUtils.getUserResponse(widget.userId).once().then((DataSnapshot snapshot) {
+      // TODO changer la variable
+      databaseUtils.getUserResponse(widget.userId , "quiz1").once().then((DataSnapshot snapshot) {
         SplayTreeMap<dynamic, dynamic> values = new SplayTreeMap<dynamic, dynamic>.from(snapshot.value);
 
         values.forEach((key,value) {
@@ -57,9 +58,9 @@ class QuizDetailState extends State<QuizDetail> {
         Flexible(
           flex: 5,
           child: FirebaseAnimatedList(
-
+            // TODO changer la variable
             key: new ValueKey<bool>(_anchorToBottom),
-            query: databaseUtils.getListQuestion(),
+            query: databaseUtils.getListQuestion("quiz1"),
             reverse: _anchorToBottom,
             sort: _anchorToBottom
                 ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)

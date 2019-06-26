@@ -10,8 +10,9 @@ class ScorePage extends StatelessWidget {
   final String timer;
   final String userId;
   final String userMail;
+  final String selectedQuiz;
   final FirebaseDatabaseUtils databaseUtils = new FirebaseDatabaseUtils();
-  ScorePage(this.score, this.totalQuestions , this.timer , this.userId , this.userMail);
+  ScorePage(this.score, this.totalQuestions , this.timer , this.userId , this.userMail , this.selectedQuiz);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +21,10 @@ class ScorePage extends StatelessWidget {
     var finalScore = (score / timeFinal);
 
     databaseUtils.getQuiz(userId).update({
-      'quiz1' : finalScore.toStringAsFixed(2)
+     selectedQuiz : finalScore.toStringAsFixed(2)
     });
 
-    databaseUtils.getUserMail(userId).update({
+    databaseUtils.getUserMail(userId , selectedQuiz).update({
       'mail' : userMail
     });
 

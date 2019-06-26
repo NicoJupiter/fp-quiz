@@ -7,6 +7,9 @@ import 'package:uuid/uuid.dart';
 
 class QuizRegisterPage extends StatefulWidget {
 
+  QuizRegisterPage(this.selectedQuiz);
+  final String selectedQuiz;
+
   @override
   State createState() => new QuizRegisterPageState();
 }
@@ -30,6 +33,7 @@ class QuizRegisterPageState extends State<QuizRegisterPage> {
     super.initState();
     databaseUtils = new FirebaseDatabaseUtils();
     _pageController = PageController();
+
   }
 
   @override
@@ -416,7 +420,7 @@ class QuizRegisterPageState extends State<QuizRegisterPage> {
       formState.save();
       try {
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _currentEmail, password: _currentPassword);
-        Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage(user.uid , user.email)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage(user.uid , user.email , widget.selectedQuiz)));
       } catch(e){
         print(e.message);
       }
@@ -430,15 +434,16 @@ class QuizRegisterPageState extends State<QuizRegisterPage> {
       formState.save();
       try {
         if(_isUserSignOnlyMail) {
+
           var uuid = new Uuid();
-          Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage(uuid.v4() , _newemail)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage(uuid.v4() , _newemail, widget.selectedQuiz)));
         } else {
           FirebaseUser user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _newemail, password: _newpassword);
           databaseUtils.getUser(user.uid).update({
             'firstname': _firstname,
             'lastname': _lastname,
           });
-          Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage(user.uid , user.email)));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage(user.uid , user.email, widget.selectedQuiz)));
         }
       } catch(e){
         print(e.message);

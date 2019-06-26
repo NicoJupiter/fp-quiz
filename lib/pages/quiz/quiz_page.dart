@@ -13,8 +13,9 @@ import 'dart:collection';
 
 class QuizPage extends StatefulWidget {
 
-  QuizPage(this.userid , this.userMail);
+  QuizPage(this.userid , this.userMail , this.selectedQuiz);
 
+  final String selectedQuiz;
   final String userid;
   final String userMail;
 
@@ -24,32 +25,6 @@ class QuizPage extends StatefulWidget {
 }
 
 class QuizPageState extends State<QuizPage> {
-
-  QuizPageState() {
-    databaseUtils = new FirebaseDatabaseUtils();
-    databaseUtils.getListQuestion().once().then((DataSnapshot snapshot) {
-
-      SplayTreeMap<dynamic, dynamic> values = new SplayTreeMap<dynamic, dynamic>.from(snapshot.value);
-
-      values.forEach((key,values) {
-        listQuestion.add(new Question(values["sujet"] , values["reponse"], values["choix1"], values["choix2"], values["choix3"], values["choix4"], values["details"]));
-      });
-
-      setState(() {
-       quiz = new Quiz(listQuestion);
-        currentQuestion = quiz.nextQuestion;
-        questionText = currentQuestion.question;
-        questionNumber = quiz.questionNumber;
-
-        optionOne = currentQuestion.option1;
-        optionTwo = currentQuestion.option2;
-        optionThree = currentQuestion.option3;
-        optionFour = currentQuestion.option4;
-        detailQuestion = currentQuestion.quizDetail;
-        _isLoading = false;
-      });
-    });
-  }
 
   Stopwatch stopwatch = new Stopwatch();
 
@@ -72,13 +47,13 @@ class QuizPageState extends State<QuizPage> {
 
   void handleAwnser(String anwser, questionNumber, time) {
 
-    databaseUtils.getTimer(widget.userid).once().then((DataSnapshot snapshot) {
+    databaseUtils.getTimer(widget.userid , widget.selectedQuiz).once().then((DataSnapshot snapshot) {
 
-      databaseUtils.getUserResponse(widget.userid).update({
+      databaseUtils.getUserResponse(widget.userid , widget.selectedQuiz).update({
         'reponse'+questionNumber.toString() : anwser,
       });
 
-      databaseUtils.getTimer(widget.userid).update({
+      databaseUtils.getTimer(widget.userid , widget.selectedQuiz).update({
         'currentTime' : time.toString()
       });
 
@@ -95,10 +70,33 @@ class QuizPageState extends State<QuizPage> {
 
 
   @override
-  void iniState() {
+  initState() {
     super.initState();
+    databaseUtils = new FirebaseDatabaseUtils();
+    databaseUtils.getListQuestion(widget.selectedQuiz).once().then((DataSnapshot snapshot) {
 
+      SplayTreeMap<dynamic, dynamic> values = new SplayTreeMap<dynamic, dynamic>.from(snapshot.value);
+
+      values.forEach((key,values) {
+        listQuestion.add(new Question(values["sujet"] , values["reponse"], values["choix1"], values["choix2"], values["choix3"], values["choix4"], values["details"]));
+      });
+
+      setState(() {
+        quiz = new Quiz(listQuestion);
+        currentQuestion = quiz.nextQuestion;
+        questionText = currentQuestion.question;
+        questionNumber = quiz.questionNumber;
+
+        optionOne = currentQuestion.option1;
+        optionTwo = currentQuestion.option2;
+        optionThree = currentQuestion.option3;
+        optionFour = currentQuestion.option4;
+        detailQuestion = currentQuestion.quizDetail;
+        _isLoading = false;
+      });
+    });
   }
+
 
 
   @override
@@ -123,8 +121,8 @@ class QuizPageState extends State<QuizPage> {
                currentQuestion , isCorrect , detailQuestion , selectedOption,
                    () {
                  if (quiz.length == questionNumber) {
-                   databaseUtils.getTimer(widget.userid).once().then((DataSnapshot snapshot) {
-                     Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (BuildContext context) => new ScorePage(quiz.score, quiz.length , snapshot.value["currentTime"] , widget.userid , widget.userMail)), (Route route) => route == null);
+                   databaseUtils.getTimer(widget.userid , widget.selectedQuiz).once().then((DataSnapshot snapshot) {
+                     Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (BuildContext context) => new ScorePage(quiz.score, quiz.length , snapshot.value["currentTime"] , widget.userid , widget.userMail , widget.selectedQuiz)), (Route route) => route == null);
                      return;
                    });
                  } else {

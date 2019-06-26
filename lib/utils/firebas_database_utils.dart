@@ -38,26 +38,32 @@ class FirebaseDatabaseUtils {
     return _databaseReference;
   }
 
-  DatabaseReference getListQuestion() {
-    _databaseReference = database.reference().child("quiz/quiz1/questions");
+  DatabaseReference getListQuestion(selectedQuiz) {
+    _databaseReference = database.reference().child("quiz/"+selectedQuiz+"/questions");
 
     return _databaseReference;
   }
 
-  DatabaseReference getUserResponse(userId) {
-    _databaseReference = database.reference().child("quiz/quiz1/participants/"+userId+"/response");
+  DatabaseReference checkLiestQuestion(quiz) {
+    _databaseReference = database.reference().child("quiz/"+quiz);
 
     return _databaseReference;
   }
 
-  DatabaseReference getTimer(userId) {
-    _databaseReference = database.reference().child("quiz/quiz1/participants/"+userId+"/timer");
+  DatabaseReference getUserResponse(userId , selectedQuiz) {
+    _databaseReference = database.reference().child("quiz/"+selectedQuiz+"/participants/"+userId+"/response");
 
     return _databaseReference;
   }
 
-  DatabaseReference getUserMail(userId) {
-    _databaseReference = database.reference().child("quiz/quiz1/participants/"+userId+"/mail");
+  DatabaseReference getTimer(userId ,selectedQuiz) {
+    _databaseReference = database.reference().child("quiz/"+selectedQuiz+"/participants/"+userId+"/timer");
+
+    return _databaseReference;
+  }
+
+  DatabaseReference getUserMail(userId , selectedQuiz) {
+    _databaseReference = database.reference().child("quiz/"+selectedQuiz+"/participants/"+userId+"/mail");
 
     return _databaseReference;
   }
