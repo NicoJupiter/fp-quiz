@@ -8,8 +8,11 @@ import 'dart:collection';
 class QuizDetail extends StatefulWidget {
 
 
-  QuizDetail(this.userId);
+  QuizDetail(this.userId , this.quizIndex , this.score);
   final String userId;
+  final String quizIndex;
+  final String score;
+
 
   @override
   State createState() => new QuizDetailState();
@@ -18,6 +21,15 @@ class QuizDetail extends StatefulWidget {
 
 class QuizDetailState extends State<QuizDetail> {
 
+  String selectedQuiz;
+
+  @override
+  initState() {
+    super.initState();
+    setState(() {
+      selectedQuiz = "quiz"+widget.quizIndex;
+    });
+  }
 
    FirebaseDatabaseUtils databaseUtils = new FirebaseDatabaseUtils();
 
@@ -29,8 +41,7 @@ class QuizDetailState extends State<QuizDetail> {
 
 
     if(_isLoading) {
-      // TODO changer la variable
-      databaseUtils.getUserResponse(widget.userId , "quiz1").once().then((DataSnapshot snapshot) {
+      databaseUtils.getUserResponse(widget.userId , selectedQuiz).once().then((DataSnapshot snapshot) {
         SplayTreeMap<dynamic, dynamic> values = new SplayTreeMap<dynamic, dynamic>.from(snapshot.value);
 
         values.forEach((key,value) {
@@ -52,7 +63,7 @@ class QuizDetailState extends State<QuizDetail> {
         Flexible (
           flex: 1,
           child: Center(
-            child: Text("oui"),
+            child: Text("Votre score : "+widget.score , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold),),
           ),
         ),
         Flexible(
@@ -60,7 +71,7 @@ class QuizDetailState extends State<QuizDetail> {
           child: FirebaseAnimatedList(
             // TODO changer la variable
             key: new ValueKey<bool>(_anchorToBottom),
-            query: databaseUtils.getListQuestion("quiz1"),
+            query: databaseUtils.getListQuestion(selectedQuiz),
             reverse: _anchorToBottom,
             sort: _anchorToBottom
                 ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)
@@ -81,7 +92,8 @@ class QuizDetailState extends State<QuizDetail> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Second Route"),
+        backgroundColor: Color(0xFF4e3883),
+        title: Text("Détails du quiz"),
       ),
       body: _childWidget
     );

@@ -111,6 +111,7 @@ class _UserHomeState extends State<UserHome> {
     );
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xFF4e3883),
           title: Text("User page"),
           actions: <Widget>[
             IconButton(
@@ -126,9 +127,6 @@ class _UserHomeState extends State<UserHome> {
   Widget showListQuiz(DataSnapshot res , index) {
 
     int realIndex = index+1;
-
-    print(realIndex.toString());
-
     User userQuiz = User.getListQuiz(res);
 
     var item = InkWell(
@@ -136,21 +134,21 @@ class _UserHomeState extends State<UserHome> {
       onTap:() {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => QuizDetail(widget.user.uid)),
+          MaterialPageRoute(builder: (context) => QuizDetail(widget.user.uid , realIndex.toString() , userQuiz.score.toString())),
         );
       },
       child: Card(
         elevation: 2.0,
         margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
         child: Container(
-          decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+          decoration: BoxDecoration(color: Color(0xFFffddcc)),
           child: ListTile(
               contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               leading: Container(
                 padding: EdgeInsets.only(right: 12.0),
                 decoration: new BoxDecoration(
                     border: new Border(
-                        right: new BorderSide(width: 1.0, color: Colors.white24))),
+                        right: new BorderSide(width: 1.0, color: Colors.black))),
                 child: StreamBuilder(
                   stream: FirebaseDatabase.instance
                       .reference()
@@ -161,7 +159,10 @@ class _UserHomeState extends State<UserHome> {
                     builder:
                     (BuildContext context, AsyncSnapshot<Event> event) {
                       if (!event.hasData)
-                        return new Center(child: new Text('Loading...'));
+                        return IconButton(
+                          icon: Icon(Icons.cake),
+                          onPressed: null,
+                        );
                       bool isWinner = false;
                       if(event.data.snapshot.value == widget.user.uid)
                         isWinner = true;
@@ -182,13 +183,13 @@ class _UserHomeState extends State<UserHome> {
               ),
               title: Text(
                 userQuiz.idQuiz,
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
               ),
               subtitle:
-              Text("Score : "+userQuiz.score, style: TextStyle(color: Colors.white)),
+              Text("Score : "+userQuiz.score, style: TextStyle(color: Colors.black)),
 
               trailing:
-              Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
+              Icon(Icons.keyboard_arrow_right, color: Colors.black, size: 30.0)
           ),
         ),
       ),
