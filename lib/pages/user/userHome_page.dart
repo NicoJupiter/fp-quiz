@@ -67,18 +67,25 @@ class _UserHomeState extends State<UserHome> {
                   alignment: Alignment.center,
                   child: Column(
                     children: <Widget>[
-                      Container(
-                          width: 100.0,
-                          height: 100.0,
-                          decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: new DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage('assets/32M.png'),
-                              )
-                          )),
-                      Text("Hey welcome",
-                          style: TextStyle(color: Colors.white , fontSize: 15.0 , fontStyle: FontStyle.italic)),
+                     Padding(
+                       padding: EdgeInsets.only(top: 20.0),
+                       child: Container(
+                           width: 100.0,
+                           height: 100.0,
+                           decoration: new BoxDecoration(
+                               shape: BoxShape.circle,
+                               image: new DecorationImage(
+                                 fit: BoxFit.fill,
+                                 image: AssetImage('assets/32M.png'),
+                               )
+                           )),
+                     ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5.0),
+                        child: Text("Hey welcome",
+                            style: TextStyle(color: Colors.white , fontSize: 15.0 , fontStyle: FontStyle.italic)),
+                      ),
+
                       Text(userData.firstname + " " + userData.lastname,
                           style: TextStyle(color: Colors.white , fontSize: 20.0 )),
                     ],
@@ -134,7 +141,7 @@ class _UserHomeState extends State<UserHome> {
       onTap:() {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => QuizDetail(widget.user.uid , realIndex.toString() , userQuiz.score.toString())),
+          MaterialPageRoute(builder: (context) => QuizDetail(widget.user.uid ,  userQuiz.idQuiz , userQuiz.score.toString())),
         );
       },
       child: Card(

@@ -8,9 +8,9 @@ import 'dart:collection';
 class QuizDetail extends StatefulWidget {
 
 
-  QuizDetail(this.userId , this.quizIndex , this.score);
+  QuizDetail(this.userId , this.selectedQuiz , this.score);
   final String userId;
-  final String quizIndex;
+  final String selectedQuiz;
   final String score;
 
 
@@ -21,14 +21,9 @@ class QuizDetail extends StatefulWidget {
 
 class QuizDetailState extends State<QuizDetail> {
 
-  String selectedQuiz;
-
   @override
   initState() {
     super.initState();
-    setState(() {
-      selectedQuiz = "quiz"+widget.quizIndex;
-    });
   }
 
    FirebaseDatabaseUtils databaseUtils = new FirebaseDatabaseUtils();
@@ -41,7 +36,7 @@ class QuizDetailState extends State<QuizDetail> {
 
 
     if(_isLoading) {
-      databaseUtils.getUserResponse(widget.userId , selectedQuiz).once().then((DataSnapshot snapshot) {
+      databaseUtils.getUserResponse(widget.userId , widget.selectedQuiz).once().then((DataSnapshot snapshot) {
         SplayTreeMap<dynamic, dynamic> values = new SplayTreeMap<dynamic, dynamic>.from(snapshot.value);
 
         values.forEach((key,value) {
@@ -69,9 +64,8 @@ class QuizDetailState extends State<QuizDetail> {
         Flexible(
           flex: 5,
           child: FirebaseAnimatedList(
-            // TODO changer la variable
             key: new ValueKey<bool>(_anchorToBottom),
-            query: databaseUtils.getListQuestion(selectedQuiz),
+            query: databaseUtils.getListQuestion(widget.selectedQuiz),
             reverse: _anchorToBottom,
             sort: _anchorToBottom
                 ? (DataSnapshot a, DataSnapshot b) => b.key.compareTo(a.key)

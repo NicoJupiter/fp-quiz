@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fp_quiz/utils/firebas_database_utils.dart';
-
+import 'package:fp_quiz/pages/user/userHome_page.dart';
 class UserInformation extends StatefulWidget {
 
   const UserInformation({
@@ -18,7 +18,7 @@ class UserInformation extends StatefulWidget {
 class _UserInformationState extends State<UserInformation> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String _firstname , _lastname , _email , _password , _currentEmail , _currentPassword;
+  String _firstname , _lastname , _email , _password , _currentEmail , _currentPassword , _error;
 
   double _containerHeight = 600;
   bool _isUserInfoWidget = true;
@@ -76,7 +76,7 @@ class _UserInformationState extends State<UserInformation> {
       formState.save();
       try {
         setState(() {
-          _containerHeight = 320.0;
+          _containerHeight = 350.0;
           _isUserInfoWidget = false;
         });
       } catch(e){
@@ -91,15 +91,19 @@ class _UserInformationState extends State<UserInformation> {
     if(formState.validate()) {
       formState.save();
       try {
-        FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _currentEmail, password: _currentPassword);
-        user.updateEmail(_email);
-        user.updatePassword(_password);
+        FirebaseUser newUser = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _currentEmail, password: _currentPassword);
+        newUser.updateEmail(_email);
+        newUser.updatePassword(_password);
 
-        databaseUtils.getUser(user.uid).update({
+        databaseUtils.getUser(newUser.uid).update({
           'firstname' : _firstname,
           'lastname' : _lastname
         });
+        Navigator.push(context, MaterialPageRoute(builder: (context) => UserHome(user : newUser)));
       } catch(e){
+        setState(() {
+          _error = "Erreur identifiant/mot de passe";
+        });
         print(e.message);
       }
 
@@ -228,12 +232,28 @@ class _UserInformationState extends State<UserInformation> {
             ),
           ),
         ),
-        Center(
-          child: RaisedButton(
-            onPressed: validUser,
-            child: Text("Confirm update"),
+        _error != null ?
+        Padding(
+          padding: EdgeInsets.all(20.0),
+          child: Text(_error , style: TextStyle(color: Colors.red ),),
+        ) : Container(),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 20.0),
+          child:   SizedBox(
+              height: 50,
+              width: 200,
+              child: OutlineButton(
+                  child: Text('Confirmer'),
+                  onPressed: validUser, //callback when button is clicked
+                  borderSide: BorderSide(
+                    color: Colors.black, //Color of the border
+                    style: BorderStyle.solid, //Style of the border
+                    width: 0.8, //width of the border
+                  ),
+                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+              )
           ),
-        )
+        ),
       ],
     );
   }

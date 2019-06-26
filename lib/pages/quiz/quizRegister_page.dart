@@ -17,7 +17,7 @@ class QuizRegisterPage extends StatefulWidget {
 class QuizRegisterPageState extends State<QuizRegisterPage> {
 
 
-  String _firstname , _lastname , _newemail , _newpassword , _currentEmail , _currentPassword;
+  String _firstname , _lastname , _newemail , _newpassword , _currentEmail , _currentPassword , _error;
   PageController _pageController;
   FirebaseDatabaseUtils databaseUtils;
 
@@ -248,37 +248,43 @@ class QuizRegisterPageState extends State<QuizRegisterPage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            SizedBox(
-                height: 50,
-                width: 100,
-                child: OutlineButton(
-                    child: Text('Registry'),
-                    onPressed: validRegistryForm, //callback when button is clicked
-                    borderSide: BorderSide(
-                      color: Colors.black, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 0.8, //width of the border
-                    ),
-                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
-                )
+            Padding(
+              padding: EdgeInsets.symmetric(vertical : 20.0),
+              child: SizedBox(
+                  height: 50,
+                  width: 100,
+                  child: OutlineButton(
+                      child: Text('Registry'),
+                      onPressed: validRegistryForm, //callback when button is clicked
+                      borderSide: BorderSide(
+                        color: Colors.black, //Color of the border
+                        style: BorderStyle.solid, //Style of the border
+                        width: 0.8, //width of the border
+                      ),
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+                  )
+              ),
             ),
-            SizedBox(
-                height: 50,
-                width: 150,
-                child: OutlineButton(
-                    child: Text('Sign in without creating an account'),
-                    onPressed: () {
-                      setState(() {
-                        _isUserSignOnlyMail = true;
-                      });
-                    },//callback when button is clicked
-                    borderSide: BorderSide(
-                      color: Colors.black, //Color of the border
-                      style: BorderStyle.solid, //Style of the border
-                      width: 0.8, //width of the border
-                    ),
-                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
-                )
+            Padding(
+              padding: EdgeInsets.symmetric(vertical : 20.0),
+              child: SizedBox(
+                  height: 50,
+                  width: 150,
+                  child: OutlineButton(
+                      child: Text('Sign in without creating an account'),
+                      onPressed: () {
+                        setState(() {
+                          _isUserSignOnlyMail = true;
+                        });
+                      },//callback when button is clicked
+                      borderSide: BorderSide(
+                        color: Colors.black, //Color of the border
+                        style: BorderStyle.solid, //Style of the border
+                        width: 0.8, //width of the border
+                      ),
+                      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+                  )
+              ),
             ),
           ],
         ),
@@ -381,6 +387,11 @@ class QuizRegisterPageState extends State<QuizRegisterPage> {
                   ),
                 ),
               ),
+              _error != null ?
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: Text(_error , style: TextStyle(color: Colors.red ),),
+              ) : Container(),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20.0),
               child:   SizedBox(
@@ -422,6 +433,9 @@ class QuizRegisterPageState extends State<QuizRegisterPage> {
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _currentEmail, password: _currentPassword);
         Navigator.push(context, MaterialPageRoute(builder: (context) => QuizPage(user.uid , user.email , widget.selectedQuiz)));
       } catch(e){
+        setState(() {
+          _error = "Erreur identifiant/mot de passe";
+        });
         print(e.message);
       }
 

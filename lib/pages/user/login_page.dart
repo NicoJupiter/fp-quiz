@@ -13,7 +13,7 @@ class Login extends StatefulWidget {
 
 class LoginState extends State<Login>{
 
-  String _email , _password;
+  String _email , _password , _error;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -113,6 +113,11 @@ class LoginState extends State<Login>{
                 obscureText: true,
               ),
             ),
+            _error != null ?
+                Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Text(_error , style: TextStyle(color: Colors.red ),),
+                ) : Container(),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 20.0),
               child:   SizedBox(
@@ -145,6 +150,9 @@ class LoginState extends State<Login>{
         FirebaseUser user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _email, password: _password);
         Navigator.push(context, MaterialPageRoute(builder: (context) => UserHome(user : user)));
       } catch(e){
+        setState(() {
+          _error = "Erreur identifiant/mot de passe";
+        });
         print(e.message);
       }
 

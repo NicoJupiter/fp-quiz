@@ -4,11 +4,11 @@ import '../utils/question.dart';
 
 class QuizDetail extends StatelessWidget {
 
-  Question currentQuestion;
-  String quizDetail;
-  String selectedOption;
-  bool isCorrect;
-  final VoidCallback _onTap;
+ final Question currentQuestion;
+ final String quizDetail;
+ final String selectedOption;
+ final bool isCorrect;
+ final  VoidCallback _onTap;
 
 
   QuizDetail(this.currentQuestion  , this.isCorrect , this.quizDetail , this.selectedOption ,this._onTap);
@@ -76,21 +76,23 @@ class QuizDetail extends StatelessWidget {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20),),
           ),
-
           Padding(
-              padding: EdgeInsets.symmetric(vertical :  MediaQuery.of(context).size.height * 0.05 , horizontal: MediaQuery.of(context).size.height * 0.15 ),
-              child: ButtonTheme(
-                height: MediaQuery.of(context).size.height * 0.055,
-                child: RaisedButton(
-
-                    color: Colors.white30,
-                    child: Text("Suivant"),
+            padding: EdgeInsets.symmetric(vertical: 20.0),
+            child:   SizedBox(
+                height: 50,
+                width: 200,
+                child: OutlineButton(
+                    child: Text('Suivant'),
                     onPressed: () => _onTap(),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
-                ),
-              )
+                    borderSide: BorderSide(
+                      color: Colors.black, //Color of the border
+                      style: BorderStyle.solid, //Style of the border
+                      width: 0.8, //width of the border
+                    ),
+                    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+                )
+            ),
           ),
-
         ],
     );
 
