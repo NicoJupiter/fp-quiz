@@ -27,32 +27,49 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
+          backgroundColor: Color(0xFF4e3883),
           title: new Text('QR Code Scanner'),
         ),
         body: new Center(
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: new Stack(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: RaisedButton(
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    splashColor: Colors.blueGrey,
-                    onPressed: scan,
-                    child: const Text('START CAMERA SCAN')
+              Container(
+                decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                        colorFilter: new ColorFilter.mode(Colors.deepPurple.withOpacity(0.5), BlendMode.softLight),
+                        image: new AssetImage("assets/bg1.jpg"),
+                        fit: BoxFit.cover
+                    )
                 ),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: barcode != "" ? _buttonAcessToQuiz() : Container(),
+                child: RaisedButton(
+                    color: Colors.deepPurple,
+                    textColor: Colors.white,
+                    splashColor: Colors.blueAccent,
+                    onPressed: scan,
+                    child: const Text('Scanner le QR code')
+                ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Text(error),
-              )
-              ,
+              Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: barcode != "" ? _buttonAcessToQuiz() : Container(),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                      child: Text(error, style: TextStyle(color: Colors.redAccent , fontSize: 20 , fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                )
+              ),
+
             ],
           ),
         ));
@@ -61,10 +78,10 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
 
   Widget _buttonAcessToQuiz() {
     return   SizedBox(
-        height: 50,
-        width: 100,
+        height: 100,
+        width: 200,
         child: OutlineButton(
-            child: Text('Acceder au quiz'),
+            child: Text('Acceder au quiz', style: TextStyle(color: Colors.blueAccent , fontSize: 20 , fontWeight: FontWeight.bold),),
             onPressed: () {
               Navigator.push(
                 context,
@@ -74,9 +91,9 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
             borderSide: BorderSide(
               color: Colors.black, //Color of the border
               style: BorderStyle.solid, //Style of the border
-              width: 0.8, //width of the border
+              width: 1, //width of the border
             ),
-            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0))
+            shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(50.0))
         )
     );
   }
@@ -87,7 +104,6 @@ class _ScanQrCodePageState extends State<ScanQrCodePage> {
       if(barcode != null) {
         databaseUtils.checkLiestQuestion(barcode).once().then((DataSnapshot snapshot) {
           if(snapshot.value != null) {
-
             setState(() {
               this.barcode = barcode;
               this.error = "";

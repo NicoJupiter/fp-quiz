@@ -47,25 +47,20 @@ class QuizPageState extends State<QuizPage> {
 
   void handleAwnser(String anwser, questionNumber, time) {
 
-    databaseUtils.getTimer(widget.userid , widget.selectedQuiz).once().then((DataSnapshot snapshot) {
-
-      databaseUtils.getUserResponse(widget.userid , widget.selectedQuiz).update({
-        'reponse'+questionNumber.toString() : anwser,
-      });
-
-      databaseUtils.getTimer(widget.userid , widget.selectedQuiz).update({
-        'currentTime' : time.toString()
-      });
-
+    databaseUtils.getUserResponse(widget.userid , widget.selectedQuiz).update({
+      'reponse'+questionNumber.toString() : anwser,
+    });
+    databaseUtils.getTimer(widget.userid , widget.selectedQuiz).update({
+      'currentTime' : time.toString()
     });
 
     isCorrect = (currentQuestion.anwser == anwser);
     quiz.awnser(isCorrect);
+
     this.setState(() {
       selectedOption = anwser;
       isDisplayDetail = true;
     });
-
   }
 
 
